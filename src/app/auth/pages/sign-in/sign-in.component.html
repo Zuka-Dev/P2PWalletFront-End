@@ -1,0 +1,47 @@
+<div class="background">
+  <form action="" [formGroup]="signinForm" (ngSubmit)="signin()">
+    <h1>Log In</h1>
+    <div class="form-section">
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        placeholder="Email Address"
+        formControlName="email"
+      />
+      <small
+        *ngIf="
+          signinForm.controls['email'].dirty &&
+          signinForm.hasError('required', 'email')
+        "
+        class="error"
+        >*Email Address required</small
+      >
+    </div>
+    <div class="form-section">
+      <label for="password"> Password:</label>
+      <input
+        [type]="type"
+        id="password"
+        name="password"
+        placeholder="Password"
+        formControlName="password"
+      />
+      <small
+        *ngIf="
+          signinForm.controls['password'].dirty &&
+          signinForm.hasError('required', 'password')
+        "
+        class="error"
+        >*Password is required</small
+      >
+    </div>
+    <small
+      >Dont have an account? Sign Up
+      <a id="sign-up" routerLink="/auth/sign-up">here</a></small
+    >
+    <input class="button" type="submit" value="Log In" />
+  </form>
+</div>

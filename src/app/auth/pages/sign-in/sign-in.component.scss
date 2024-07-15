@@ -1,0 +1,65 @@
+@import "../../../../styles/variables";
+
+.background {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  form {
+    border: 1px solid black;
+    padding: 30px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      // border: none;
+      border: 1px solid $primary-color;
+      background-color: transparent;
+      // background-color: $primary-color;
+      // color: #fff;
+      color: black;
+      outline: $secondary-color;
+      font-size: 16px;
+      transition: all ease-in 0.2s;
+      &::placeholder {
+        font-weight: 400;
+      }
+    }
+  }
+  .button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none !important;
+    cursor: pointer;
+    background-image: $gradient;
+    color: #fff !important;
+    font-size: 18px;
+    font-weight: 600;
+    transition: all ease-in 0.2s;
+
+    &:hover {
+      background-image: $rev-gradient;
+      transform: scale(1.02);
+    }
+    &:active {
+      transform: scale(0.7);
+    }
+  }
+  small {
+    font-weight: 300;
+    font-size: 13px;
+    a {
+      text-decoration: none;
+      color: $secondary-color;
+    }
+  }
+}
+.error {
+  color: #d47272;
+}
