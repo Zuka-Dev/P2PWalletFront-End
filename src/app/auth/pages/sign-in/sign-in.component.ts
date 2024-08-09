@@ -2,52 +2,77 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../core/services/user.service';
 import { BaseResponseDTO } from '../../../../types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-in',
-  standalone: false,
   templateUrl: './sign-in.component.html',
-  styleUrl: './sign-in.component.scss',
+  styleUrls: ['./sign-in.component.scss'],
 })
 export class SignInComponent {
   isLoading: boolean = false;
-  responseMessage!: { title: string; description?: string };
-  constructor(private fb: FormBuilder, private userService: UserService) {}
+  showToast: boolean = false;
+  toastMessage: string = '';
+  toastType!: 'success' | 'info' | 'error';
+
   signinForm!: FormGroup;
   type: string = 'password';
+
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private router: Router
+  ) {}
+
   ngOnInit(): void {
+    this.showToastMessage('User must Verify Email before Signing in', 'info');
     this.signinForm = this.fb.group({
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
   }
+
   signin(): void {
     this.isLoading = true;
-    if (!this.signinForm.invalid) {
+    if (this.signinForm.invalid) {
+      this.showToastMessage('Invalid details entered', 'error');
       this.isLoading = false;
-      this.responseMessage = {
-        title: 'Invalid Details entered',
-      };
+      return;
     }
-    /*
-    response -> error -> data,status,statusMessage
-             -> ok(bool) ,status,statusText,url
-     */
+
     console.log(this.signinForm.value);
-    this.userService
-      .loginRequest(this.signinForm.value)
-      .subscribe((response: BaseResponseDTO | any) => {
+
+    this.userService.loginRequest(this.signinForm.value).subscribe(
+      (response: BaseResponseDTO | any) => {
         this.isLoading = false;
         console.log(response);
+
         if (!response.status) {
-          console.log('error: ', response.error);
           this.signinForm.reset();
-          this.responseMessage = {
-            title: 'Error Occurred',
-            description: response.statusMessage,
-          };
+          console.log(response);
+          this.showToastMessage(response.statusMessage, 'error');
+        } else {
+          this.showToastMessage(response.statusMessage, 'success');
+          this.userService.storeToken(response.data.jwtToken);
+          this.router.navigateByUrl('/dashboard');
         }
-        localStorage.setItem('jwtToken', response.data.jwtToken);
-      });
+      },
+      (error) => {
+        this.isLoading = false;
+        console.log(error);
+        console.error('error: ', error.error.statusMessage);
+        this.signinForm.reset();
+        this.showToastMessage(error.error.statusMessage, 'error');
+      }
+    );
+  }
+
+  showToastMessage(message: string, type: 'success' | 'info' | 'error'): void {
+    this.toastMessage = message;
+    this.toastType = type;
+    this.showToast = true;
+    setTimeout(() => {
+      this.showToast = false;
+    }, 5000);
   }
 }

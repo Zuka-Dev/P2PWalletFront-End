@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../core/services/user.service';
 import { Router } from '@angular/router';
+import { BaseResponseDTO, SignUpDTO } from '../../../../types';
 
 @Component({
   selector: 'app-sign-up',
@@ -12,9 +13,9 @@ import { Router } from '@angular/router';
 export class SignUpComponent {
   signupForm!: FormGroup;
   isLoading: boolean = false;
-  data!: object;
-  responseMessage!: { title: string; description?: string };
-
+  showToast: boolean = false;
+  toastMessage: string = '';
+  toastType!: 'success' | 'info' | 'error';
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
@@ -24,57 +25,61 @@ export class SignUpComponent {
     this.signupForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
+      username: ['', Validators.required],
       email: ['', Validators.required, Validators.email],
       phoneNumber: ['', Validators.required],
       password: ['', Validators.required],
-      confirmPassword: [
-        '',
-        Validators.required,
-        { validators: this.passwordValidator },
-      ],
+      confirmPassword: ['', Validators.required],
       address: ['', Validators.required],
     });
-    this.data = {
+  }
+  passwordValidator(form: FormGroup): boolean {
+    const password = form.controls['password'].value;
+    const confirmPassword = form.controls['confirmPassword'].value;
+    return password !== confirmPassword;
+  }
+  signup(): void {
+    this.isLoading = true;
+    const data: SignUpDTO = {
       firstName: this.signupForm.value.firstName,
       lastName: this.signupForm.value.lastName,
+      username: this.signupForm.value.username,
       email: this.signupForm.value.email,
       password: this.signupForm.value.password,
       phoneNumber: this.signupForm.value.phoneNumber,
       address: this.signupForm.value.address,
     };
-  }
-  passwordValidator(form: FormGroup): void {
-    const password = form.get('password');
-    const confirmPassword = form.get('confirmPassword');
-    if (password?.value !== confirmPassword?.value) {
-      confirmPassword?.setErrors({ notMatch: true });
-    } else {
-      confirmPassword?.setErrors(null);
-    }
-  }
-  signup(): void {
-    if (this.signupForm.valid) {
-      this.isLoading = true;
-      this.userService.signupRequest(this.data).subscribe((res) => {
-        this.isLoading = false;
+    console.log(data);
+    this.userService.signupRequest(data).subscribe(
+      (res: BaseResponseDTO) => {
         console.log(res);
+        this.isLoading = false;
         if (!res.status) {
           console.log(res);
-          this.responseMessage = {
-            title: 'User sign up Unsuccessful',
-            description: 'Error creating user',
-          };
+          this.showToastMessage(res.statusMessage, 'error');
           this.signupForm.reset();
           return;
         }
-        this.responseMessage = {
-          title: 'User successfully created',
-          description: 'User has been successfully created in the application',
-        };
+        this.showToastMessage(res.statusMessage, 'success');
         this.router.navigateByUrl('/auth/sign-in');
-      });
-      this.signupForm.reset();
-      this.isLoading = false;
-    }
+      },
+      (error) => {
+        this.isLoading = false;
+        console.log(error);
+        console.error('error: ', error.error.statusMessage);
+        this.signupForm.reset();
+        this.showToastMessage(error.error.statusMessage, 'error');
+        this.router.navigateByUrl('/auth/sign-up');
+      }
+    );
+    this.signupForm.reset();
+  }
+  showToastMessage(message: string, type: 'success' | 'info' | 'error'): void {
+    this.toastMessage = message;
+    this.toastType = type;
+    this.showToast = true;
+    setTimeout(() => {
+      this.showToast = false;
+    }, 5000);
   }
 }

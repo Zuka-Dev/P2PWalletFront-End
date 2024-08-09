@@ -1,38 +1,55 @@
 <div class="background">
-  <form action="" method="post" [formGroup]="signupForm">
-    <h1>Sign Up</h1>
+  <form method="post" [formGroup]="signupForm" (ngSubmit)="signup()">
+    <h1 style="text-align: center">Create An Account</h1>
+    <p>Already have an account? <a routerLink="/auth/sign-in">Sign In</a></p>
     <div class="form-section">
-      <label for="">First Name</label
-      ><input type="text" formControlName="firstName" />
+      <input type="text" formControlName="firstName" placeholder="First Name" />
+      <input type="text" formControlName="lastName" placeholder="Last Name" />
+    </div>
+
+    <div class="form-section">
+      <input type="text" formControlName="username" placeholder="Username" />
     </div>
     <div class="form-section">
-      <label for="">Last Name</label
-      ><input type="text" formControlName="lastName" />
+      <input type="email" formControlName="email" placeholder="Email Address" />
     </div>
     <div class="form-section">
-      <label for="">Username</label
-      ><input type="text" formControlName="username" />
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="Password"
+      /><input
+        type="password"
+        formControlName="confirmPassword"
+        placeholder="Confirm Password"
+      />
     </div>
+    <small
+      *ngIf="
+        signupForm.controls['confirmPassword'].touched &&
+        passwordValidator(signupForm)
+      "
+      class="error-message"
+      >Passwords do not match</small
+    >
     <div class="form-section">
-      <label for="">Email</label><input type="email" formControlName="email" />
+      <input
+        type="tel"
+        formControlName="phoneNumber"
+        placeholder="Phone Number"
+      />
+      <input type="text" formControlName="address" placeholder="Address" />
     </div>
-    <div class="form-section">
-      <label for="">Password</label
-      ><input type="password" formControlName="password" />
-    </div>
-    <div class="form-section">
-      <label for="">Confirm Password</label
-      ><input type="password" formControlName="confirmPassword" />
-      <!-- <small *ngIf="signupForm.get("confirmPassord")?.errors.passwordValidator">Password does not match </small> -->
-    </div>
-    <div class="form-section">
-      <label for="">Phone</label
-      ><input type="tel" formControlName="phoneNumber" />
-    </div>
-    <div class="form-section">
-      <label for="">Address</label
-      ><input type="text" formControlName="address" />
-    </div>
-    <input type="submit" value="Sign Up" />
+
+    <input type="submit" value="Create A New Account" />
   </form>
+  <app-toast
+    [type]="toastType"
+    *ngIf="showToast"
+    [message]="toastMessage"
+  ></app-toast>
+</div>
+
+<div class="loading" *ngIf="isLoading">
+  <div class="spinner"></div>
 </div>

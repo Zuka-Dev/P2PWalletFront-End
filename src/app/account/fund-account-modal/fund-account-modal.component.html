@@ -1,0 +1,19 @@
+<div class="modal-overlay">
+  <div class="modal-content">
+    <h2>Fund Account</h2>
+    <form [formGroup]="fundAccountForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="fund">Fund Amount</label>
+        <input type="number" id="fund" formControlName="fund" placeholder="Enter fund amount">
+        <div *ngIf="fundAccountForm.get('fund')?.invalid && (fundAccountForm.get('fund')?.dirty || fundAccountForm.get('fund')?.touched)" class="error-message">
+          <div *ngIf="fundAccountForm.get('fund')?.errors?.['required']">Fund amount is required.</div>
+          <div *ngIf="fundAccountForm.get('fund')?.errors?.['min']">Fund amount must be greater than 0.</div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" [disabled]="fundAccountForm.invalid">Fund</button>
+        <button type="button" (click)="close.emit()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

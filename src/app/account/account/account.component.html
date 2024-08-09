@@ -1,0 +1,56 @@
+<div class="accounts-page">
+  <app-sidebar></app-sidebar>
+
+  <main class="accounts-content">
+    <header>
+      <h1 style="color: white">Welcome, {{ userDetails.firstName }}!</h1>
+    </header>
+
+    <section class="account-balance">
+      <h2>Current Balance</h2>
+      <p class="balance">&#8358; {{ accountBalance | number : "1.2-2" }}</p>
+    </section>
+
+    <section class="account-actions">
+      <button (click)="openFundAccountModal()" class="action-button">
+        Fund Account
+      </button>
+      <button (click)="openTransferMoneyModal()" class="action-button">
+        Transfer Money
+      </button>
+    </section>
+
+    <!-- <section class="transaction-history">
+      <h2>Recent Transactions</h2>
+      <ul>
+        <li *ngFor="let transaction of recentTransactions">
+          {{ transaction.date | date : "short" }} -
+          {{ transaction.description }} - {{ transaction.amount | currency }}
+        </li>
+      </ul>
+    </section> -->
+  </main>
+</div>
+
+<app-fund-account-modal
+  *ngIf="showFundAccountModal"
+  (close)="closeFundAccountModal()"
+  (fundAccount)="onFundAccount($event)"
+>
+</app-fund-account-modal>
+
+<app-transfer-money-modal
+  *ngIf="showTransferMoneyModal"
+  (close)="closeTransferMoneyModal()"
+  (transferMoney)="onTransferMoney($event)"
+>
+</app-transfer-money-modal>
+
+<app-toast
+  [type]="toastType"
+  *ngIf="showToast"
+  [message]="toastMessage"
+></app-toast>
+<div class="loading" *ngIf="isLoading">
+  <div class="spinner"></div>
+</div>

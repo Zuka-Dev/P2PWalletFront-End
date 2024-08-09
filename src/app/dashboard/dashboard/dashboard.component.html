@@ -1,0 +1,135 @@
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+  <div class="dashboard">
+    <div class="user-info">
+      <h1>Welcome, {{ userDetails.firstName }} {{ userDetails.lastName }}</h1>
+      <p class="username">{{ userDetails.username }}</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="quick-stats">
+        <div class="stat-card">
+          <h3>Total Balance</h3>
+          <p class="balance">{{ getTotalBalance() | number : "1.2-2" }}</p>
+        </div>
+        <div class="stat-card">
+          <h3>Accounts</h3>
+          <p class="count">{{ userDetails.accounts.length }}</p>
+        </div>
+        <div class="stat-card">
+          <h3>Last Transaction</h3>
+          <p class="amount">
+            &#8358;{{ getLastTransaction().amount | number : "1.2-2" }},
+            {{ getLastTransaction().timeDifference }}
+          </p>
+        </div>
+      </div>
+
+      <div class="account-summary">
+        <h2>Your Accounts</h2>
+        <div class="account-cards">
+          <div
+            class="account-card"
+            *ngFor="let account of userDetails.accounts"
+          >
+            <div class="card-chip"></div>
+            <p class="card-username">
+              {{ userDetails.firstName | uppercase }}
+              {{ userDetails.lastName | uppercase }}
+            </p>
+
+            <p class="account-number">{{ account.accountNumber }}</p>
+            <p class="balance">
+              {{ account.balance | number : "1.2-2" }} {{ account.currency }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Placeholder for Spending Chart -->
+      <div class="chart-container">
+        <h2>Monthly Spending</h2>
+        <!-- 
+      Add your chart component here, for example:
+      <app-spending-chart [data]="spendingData"></app-spending-chart>
+      --></div>
+
+      <!-- Placeholder for Income vs Expenses Chart -->
+      <div class="chart-container">
+        <h2>Income vs Expenses</h2>
+        <!-- 
+      Add your chart component here, for example:
+      <app-income-expenses-chart [data]="incomeExpensesData"></app-income-expenses-chart>
+      --></div>
+
+      <div class="recent-transactions">
+        <h2>Recent Transactions</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Id</th>
+              <th>Sender Account</th>
+              <th>Amount</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let transaction of recentTransactions">
+              <td>{{ transaction.transactionTime | date : "short" }}</td>
+              <td>{{ transaction.id }}</td>
+              <td>{{ transaction.senderId }}</td>
+              <td
+                [ngClass]="{
+                  credit:
+                    getType(transaction, userDetails.accounts[0]) === 'credit',
+                  debit:
+                    getType(transaction, userDetails.accounts[0]) === 'debit'
+                }"
+              >
+                &#8358; {{ transaction.amount | number : "1.2-2" }}
+              </td>
+              <td>
+                {{ getType(transaction, userDetails.accounts[0]) | titlecase }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="view-all-btn">View All Transactions</button>
+      </div>
+      <!-- <div class="recent-transactions">
+        <h2>Recent Deposits</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Id</th>
+              <th>Amount</th>
+              <th>Reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let deposit of recentDeposits">
+              <td>{{ deposit.date | date : "short" }}</td>
+              <td>{{ deposit.id }}</td>
+              <td class="credit">
+                &#8358; {{ deposit.amount | number : "1.2-2" }}
+              </td>
+              <td>{{ deposit.reference }}</td>
+              <td class="credit">{{ deposit.status }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div> -->
+    </div>
+  </div>
+  <app-toast
+    [type]="toastType"
+    *ngIf="showToast"
+    [message]="toastMessage"
+  ></app-toast>
+
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+</div>

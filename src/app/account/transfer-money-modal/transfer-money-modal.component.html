@@ -1,0 +1,66 @@
+<div class="modal-overlay">
+  <div class="modal-content">
+    <h2>Transfer Money</h2>
+    <form [formGroup]="transferMoneyForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="beneficiaryId">Beneficiary ID</label>
+        <input
+          type="text"
+          id="beneficiaryId"
+          formControlName="beneficiaryId"
+          placeholder="Enter beneficiary ID"
+        />
+        <div
+          *ngIf="
+            transferMoneyForm.get('beneficiaryId')?.invalid &&
+            (transferMoneyForm.get('beneficiaryId')?.dirty ||
+              transferMoneyForm.get('beneficiaryId')?.touched)
+          "
+          class="error-message"
+        >
+          <div
+            *ngIf="transferMoneyForm.get('beneficiaryId')?.errors?.['required']"
+          >
+            Beneficiary ID is required.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input
+          type="number"
+          id="amount"
+          formControlName="amount"
+          placeholder="Enter amount"
+        />
+        <div
+          *ngIf="
+            transferMoneyForm.get('amount')?.invalid &&
+            (transferMoneyForm.get('amount')?.dirty ||
+              transferMoneyForm.get('amount')?.touched)
+          "
+          class="error-message"
+        >
+          <div *ngIf="transferMoneyForm.get('amount')?.errors?.['required']">
+            Amount is required.
+          </div>
+          <div *ngIf="transferMoneyForm.get('amount')?.errors?.['min']">
+            Amount must be greater than 0.
+          </div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" [disabled]="transferMoneyForm.invalid">
+          Transfer
+        </button>
+        <button type="button" (click)="close.emit()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+<app-pin-entry-modal
+  *ngIf="showPinModal"
+  (submitPin)="onPinSubmit($event)"
+  (cancel)="onPinCancel()"
+>
+</app-pin-entry-modal>

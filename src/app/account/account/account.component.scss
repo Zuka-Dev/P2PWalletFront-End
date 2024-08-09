@@ -1,0 +1,107 @@
+@import "../../../styles/variables";
+
+.accounts-page {
+  display: flex;
+  height: 100vh;
+}
+
+.accounts-content {
+  flex: 1;
+  padding: 2rem;
+  color: white;
+  background-color: $background-color;
+  min-height: 100vh;
+  margin-left: 250px;
+}
+
+header {
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2rem;
+    color: #333;
+  }
+}
+
+.account-balance {
+  background-color: $primary-color;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .balance {
+    font-size: 2.3rem;
+    font-weight: bold;
+    color: $secondary-color;
+  }
+}
+
+.account-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  .action-button {
+    flex: 1;
+    padding: 1rem;
+    background-image: $gradient;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-image 0.3s;
+
+    &:hover {
+      background-image: $rev-gradient;
+    }
+  }
+}
+
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color: #000000, $alpha: 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  .spinner {
+    width: 200px;
+    height: 200px;
+    border: 8px solid white;
+    border-top: 8px solid $secondary-color;
+    border-radius: 50%;
+    border-left: none;
+    background-color: transparent;
+    transition: all ease-in;
+    animation: spin 3s linear infinite;
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

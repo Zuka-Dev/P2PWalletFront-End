@@ -1,8 +1,7 @@
 <div class="background">
   <form action="" [formGroup]="signinForm" (ngSubmit)="signin()">
     <h1>Log In</h1>
-    <div class="form-section">
-      <label for="email">Email:</label>
+    <div class="form-section" style="display: flex; flex-direction: column">
       <input
         type="email"
         id="email"
@@ -16,12 +15,12 @@
           signinForm.controls['email'].dirty &&
           signinForm.hasError('required', 'email')
         "
+        style="width: 100%"
         class="error"
         >*Email Address required</small
       >
     </div>
-    <div class="form-section">
-      <label for="password"> Password:</label>
+    <div class="form-section" style="display: flex; flex-direction: column">
       <input
         [type]="type"
         id="password"
@@ -34,14 +33,27 @@
           signinForm.controls['password'].dirty &&
           signinForm.hasError('required', 'password')
         "
+        style="width:100%"
         class="error"
         >*Password is required</small
       >
     </div>
     <small
-      >Dont have an account? Sign Up
-      <a id="sign-up" routerLink="/auth/sign-up">here</a></small
+      >Dont have an account?
+      <a id="sign-up" routerLink="/auth/sign-up">Sign Up</a></small
+    >
+    <small
+      >Forgot your password?
+      <a id="sign-up" routerLink="/auth/forgot-password">Click here</a></small
     >
     <input class="button" type="submit" value="Log In" />
   </form>
+</div>
+<app-toast
+  [type]="toastType"
+  *ngIf="showToast"
+  [message]="toastMessage"
+></app-toast>
+<div class="loading" *ngIf="isLoading">
+  <div class="spinner"></div>
 </div>

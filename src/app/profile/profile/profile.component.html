@@ -1,0 +1,247 @@
+<div class="profile-container">
+  <app-sidebar></app-sidebar>
+
+  <div class="profile-content">
+    <section class="section">
+      <h2>Personal Details</h2>
+      <form [formGroup]="profileForm" (ngSubmit)="onUpdateProfile()">
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            formControlName="lastName"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" id="address" formControlName="address" required />
+        </div>
+        <div class="form-group">
+          <label for="phoneNumber">Phone Number</label>
+          <input
+            type="tel"
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="image">Profile Image</label>
+          <input
+            type="file"
+            id="image"
+            formControlName="image"
+            (change)="onImageSelected($event)"
+          />
+        </div>
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn-primary"
+            (click)="openChangePasswordModal()"
+          >
+            Change Password
+          </button>
+          <button
+            type="button"
+            class="btn-primary"
+            (click)="openCreatePinModal()"
+          >
+            Create PIN
+          </button>
+          <button
+            type="button"
+            class="btn-primary"
+            (click)="openChangePinModal()"
+          >
+            Change PIN
+          </button>
+          <button
+            type="submit"
+            [disabled]="profileForm.invalid"
+            class="btn-primary"
+          >
+            Update Profile
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Change Password Modal -->
+    <ng-container *ngIf="isChangePasswordModalOpen">
+      <div class="modal">
+        <div class="modal-content">
+          <span class="close-button" (click)="closeChangePasswordModal()"
+            >&times;</span
+          >
+          <h2>Change Password</h2>
+          <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
+            <div class="form-group">
+              <label for="currentPassword">Current Password</label>
+              <input
+                type="password"
+                id="currentPassword"
+                formControlName="oldPassword"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="newPassword">New Password</label>
+              <input
+                type="password"
+                id="newPassword"
+                formControlName="newPassword"
+                required
+              />
+            </div>
+            <button type="submit" [disabled]="passwordForm.invalid">
+              Change Password
+            </button>
+          </form>
+        </div>
+      </div>
+    </ng-container>
+    <!-- SecurityQuestionForm -->
+    <ng-container *ngIf="isSecurityModalOpen">
+      <div class="modal">
+        <div class="modal-content">
+          <span class="close-button" (click)="closeCreatePinModal()"
+            >&times;</span
+          >
+          <form
+            [formGroup]="securityQuestionsForm"
+            (ngSubmit)="onCreateSecurityQuestion()"
+          >
+            <div class="form-group">
+              <label for="securityQuestion">Security Question</label>
+              <select
+                id="securityQuestion"
+                formControlName="newSecurityQuestion"
+                required
+              >
+                <option
+                  *ngFor="let question of securityQuestions"
+                  [value]="question.id"
+                >
+                  {{ question.securityQuestion }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="securityAnswer">Security Answer</label>
+              <input
+                type="text"
+                id="securityAnswer"
+                formControlName="newSecurityAnswer"
+                required
+              />
+            </div>
+            <button type="submit" [disabled]="securityQuestionsForm.invalid">
+              Next
+            </button>
+          </form>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isSecurityAnswerModalOpen">
+      <div class="modal">
+        <div class="modal-content">
+          <span class="close-button" (click)="closeSecurityAnswerModal()"
+            >&times;</span
+          >
+          <h2>Security Answer</h2>
+          <form
+            [formGroup]="checkSecurityForm"
+            (ngSubmit)="onCheckSecurityAnswer()"
+          >
+            <div class="form-group">
+              <label for="securityAnswer">Security Answer</label>
+              <input
+                type="text"
+                id="securityAnswer"
+                formControlName="securityAnswer"
+                required
+              />
+            </div>
+
+            <button type="submit" [disabled]="checkSecurityForm.invalid">
+              Next
+            </button>
+          </form>
+        </div>
+      </div>
+    </ng-container>
+    <!-- Create PIN Modal -->
+    <ng-container *ngIf="isCreatePinModalOpen">
+      <div class="modal">
+        <div class="modal-content">
+          <span class="close-button" (click)="closeCreatePinModal()"
+            >&times;</span
+          >
+          <h2>Create PIN</h2>
+          <form [formGroup]="createPinForm" (ngSubmit)="onCreatePin()">
+            <div class="form-group">
+              <label for="newPin">New PIN</label>
+              <input
+                type="password"
+                id="newPin"
+                formControlName="newPin"
+                required
+              />
+            </div>
+            <button type="submit" [disabled]="createPinForm.invalid">
+              Create PIN
+            </button>
+          </form>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Change PIN Modal -->
+    <ng-container *ngIf="isChangePinModalOpen">
+      <div class="modal">
+        <div class="modal-content">
+          <span class="close-button" (click)="closeChangePinModal()"
+            >&times;</span
+          >
+          <h2>Change PIN</h2>
+          <form [formGroup]="changePinForm" (ngSubmit)="onChangePIN()">
+            <div class="form-group">
+              <label for="oldPin">Old PIN</label>
+              <input
+                type="password"
+                id="oldPin"
+                formControlName="oldPin"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="newPin">New PIN</label>
+              <input
+                type="password"
+                id="newPin"
+                formControlName="newPin"
+                required
+              />
+            </div>
+            <button type="submit" [disabled]="changePinForm.invalid">
+              Change PIN
+            </button>
+          </form>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<app-toast
+  [type]="toastType"
+  *ngIf="showToast"
+  [message]="toastMessage"
+></app-toast>
+
+<div class="loading" *ngIf="isLoading">
+  <div class="spinner"></div>
+</div>

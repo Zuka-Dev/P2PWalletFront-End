@@ -1,0 +1,473 @@
+@import "../../../styles/variables";
+
+.dashboard-container {
+  display: flex;
+  z-index: 10;
+}
+
+.dashboard {
+  flex: 1;
+  padding: 2rem;
+  color: white;
+  background-color: $background-color;
+  min-height: 100vh;
+  margin-left: 250px; // Adjust this value to match your sidebar width
+}
+
+.user-info {
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: $gradient;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: $grey;
+  }
+}
+
+.accounts-section {
+  margin-bottom: 2rem;
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: $accent-color;
+  }
+
+  .account-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .account-card {
+    background: $gradient;
+    padding: 1.5rem;
+    border-radius: 15px;
+    width: 340px;
+    height: 200px;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-chip {
+      width: 50px;
+      height: 40px;
+      background: linear-gradient(to bottom right, #ffd700, #ffcc00, #cca300);
+      border-radius: 5px;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            to right,
+            transparent 40%,
+            rgba(255, 255, 255, 0.3) 45%,
+            transparent 50%
+          ),
+          linear-gradient(
+            to bottom,
+            transparent 40%,
+            rgba(255, 255, 255, 0.3) 45%,
+            transparent 50%
+          );
+        background-size: 200% 200%;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          transparent 45%,
+          rgba(255, 255, 255, 0.15) 48%,
+          rgba(255, 255, 255, 0.3) 50%,
+          rgba(255, 255, 255, 0.15) 52%,
+          transparent 55%
+        );
+        background-size: 10px 10px;
+      }
+    }
+
+    .card-username {
+      position: absolute;
+      top: 70px;
+      left: 20px;
+      font-family: "Courier New", monospace;
+      font-size: 1.2rem;
+      letter-spacing: 3px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .account-number {
+      position: absolute;
+      bottom: 60px;
+      left: 20px;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      font-family: "Courier New", monospace;
+    }
+
+    .balance {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+  }
+}
+
+.transaction-history,
+.spending-charts {
+  margin-bottom: 2rem;
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: $accent-color;
+  }
+}
+
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color: #000000, $alpha: 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  .spinner {
+    width: 200px;
+    height: 200px;
+    border: 8px solid white;
+    border-top: 8px solid $secondary-color;
+    border-radius: 50%;
+    border-left: none;
+    background-color: transparent;
+    transition: all ease-in;
+    animation: spin 3s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+.error {
+  color: #d85959;
+  width: 50%;
+}
+
+@import "../../../styles/variables";
+
+.dashboard {
+  padding: 2rem;
+  color: white;
+  background-color: $background-color;
+  min-height: 100vh;
+}
+
+.user-info {
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: $gradient;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .username {
+    font-size: 1.2rem;
+    color: $grey;
+  }
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.quick-stats {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  grid-column: 1 / -1;
+
+  .stat-card {
+    background-color: $primary-color;
+    padding: 1.5rem;
+    border-radius: 10px;
+    flex: 1;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    h3 {
+      font-size: 1rem;
+      color: $grey;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .balance {
+      color: $accent-color;
+    }
+
+    .amount {
+      color: #fff;
+    }
+  }
+}
+
+.account-summary,
+.chart-container,
+.recent-transactions {
+  background-color: $primary-color;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: $accent-color;
+  }
+}
+
+.account-cards {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding-bottom: 1rem;
+
+  .account-card {
+    background: $gradient;
+    padding: 1.5rem;
+    border-radius: 15px;
+    width: 340px;
+    height: 200px;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-chip {
+      width: 50px;
+      height: 40px;
+      background: linear-gradient(to bottom right, #ffd700, #ffcc00, #cca300);
+      border-radius: 5px;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            to right,
+            transparent 40%,
+            rgba(255, 255, 255, 0.3) 45%,
+            transparent 50%
+          ),
+          linear-gradient(
+            to bottom,
+            transparent 40%,
+            rgba(255, 255, 255, 0.3) 45%,
+            transparent 50%
+          );
+        background-size: 200% 200%;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          transparent 45%,
+          rgba(255, 255, 255, 0.15) 48%,
+          rgba(255, 255, 255, 0.3) 50%,
+          rgba(255, 255, 255, 0.15) 52%,
+          transparent 55%
+        );
+        background-size: 10px 10px;
+      }
+    }
+
+    .account-number {
+      position: absolute;
+      top: 70px;
+      left: 20px;
+      font-family: "Courier New", monospace;
+      font-size: 1.2rem;
+      letter-spacing: 3px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .card-username {
+      position: absolute;
+      bottom: 60px;
+      left: 20px;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      font-weight: 600;
+    }
+
+    .balance {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+  }
+}
+
+.recent-transactions {
+  grid-column: 1 / -1;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+
+    th,
+    td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid rgba($grey, 0.2);
+    }
+
+    th {
+      color: $grey;
+      font-weight: normal;
+    }
+
+    .credit {
+      color: #4caf50;
+    }
+
+    .debit {
+      color: #f44336;
+    }
+  }
+
+  .view-all-btn {
+    background: $gradient;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+.credit {
+  color: #4caf50;
+}
+.debit {
+  color: #f44336;
+}
+// Add responsive adjustments as needed
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-stats {
+    flex-direction: column;
+  }
+}
+
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color: #000000, $alpha: 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  .spinner {
+    width: 200px;
+    height: 200px;
+    border: 8px solid white;
+    border-top: 8px solid $secondary-color;
+    border-radius: 50%;
+    border-left: none;
+    background-color: transparent;
+    transition: all ease-in;
+    animation: spin 3s linear infinite;
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+.error {
+  color: #d85959;
+  width: 50%;
+}
