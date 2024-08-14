@@ -30,6 +30,10 @@ export class ProfileService {
       data
     );
   }
+  getSecurityQuestionById(id: number): Observable<any> {
+        return this._apiService.authorisedGetRequest(`/api/SecurityQuestions/${id}`);
+
+  }
   updateProfile(data: UpdateProfileDTO): Observable<any> {
     return this._apiService.authorisedPutRequest(
       '/api/UserAuth/user/updateUser',
