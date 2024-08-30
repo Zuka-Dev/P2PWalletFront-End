@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoginDTO, UserDetails, VerifyEmailDto } from '../../../types';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class UserService {
   private userDetailsSubject = new BehaviorSubject<UserDetails | null>(null);
   userDetails$ = this.userDetailsSubject.asObservable();
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   loginRequest(data: LoginDTO): Observable<any> {
     return this.apiService.postRequest('/api/UserAuth/login', data);
@@ -29,6 +30,7 @@ export class UserService {
   }
   logout(): void {
     localStorage.removeItem('jwtToken');
+    this.router.navigateByUrl('/auth/sign-in');
   }
   getUserDetails(): Observable<any> {
     return this.apiService.authorisedGetRequest('/api/UserAuth/user/details');

@@ -15,7 +15,7 @@ import { TransactionService } from '../../core/services/transaction.service';
 
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-})
+}) 
 export class DashboardComponent {
   isLoading: boolean = false;
   userDetails!: UserDetails;
@@ -51,6 +51,7 @@ export class DashboardComponent {
         }
         this.userService.setUserDetails(res.data);
         this.userDetails = res.data as UserDetails;
+        console.log(this.userDetails.accounts)
         if (this.userDetails.hasPin === false) {
           this.showToastMessage(
             'User must create pin before making transfers',

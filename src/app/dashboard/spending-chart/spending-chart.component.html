@@ -1,0 +1,18 @@
+<div class="spending-chart">
+  <table class="charts-css line multiple data-spacing-20 show-labels show-primary-axis">
+    <thead>
+      <tr>
+        <th scope="col">Month</th>
+        <th scope="col">Spending</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let amount of getTransactionAmountsByMonth(); let i = index">
+        <td style="--start: 0; --size: {{ amount / maxAmount }}">
+          <span class="data-label">${{ amount.toFixed(2) }}</span>
+        </td>
+        <td>{{ monthNames[i] }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

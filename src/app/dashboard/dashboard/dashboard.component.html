@@ -24,43 +24,43 @@
           </p>
         </div>
       </div>
+      <div class="stats">
+        <div class="account-summary">
+          <h2>Your Accounts</h2>
+          <div class="account-cards">
+            <div
+              class="account-card"
+              *ngFor="let account of userDetails.accounts"
+            >
+              <div class="card-chip"></div>
+              <p class="account-number">{{ account.accountNumber }}</p>
+              <p class="card-username" style="font-size: 1.6rem;font-weight: 600;">
+                {{ userDetails.firstName }}
+                {{ userDetails.lastName }}
+              </p>
 
-      <div class="account-summary">
-        <h2>Your Accounts</h2>
-        <div class="account-cards">
-          <div
-            class="account-card"
-            *ngFor="let account of userDetails.accounts"
-          >
-            <div class="card-chip"></div>
-            <p class="card-username">
-              {{ userDetails.firstName | uppercase }}
-              {{ userDetails.lastName | uppercase }}
-            </p>
-
-            <p class="account-number">{{ account.accountNumber }}</p>
-            <p class="balance">
-              {{ account.balance | number : "1.2-2" }} {{ account.currency }}
-            </p>
+              <p class="balance">
+                {{ account.balance | number : "1.2-2" }} {{ account.currency }}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Placeholder for Spending Chart -->
-      <div class="chart-container">
-        <h2>Monthly Spending</h2>
-        <!-- 
-      Add your chart component here, for example:
-      <app-spending-chart [data]="spendingData"></app-spending-chart>
-      --></div>
+        <!-- Placeholder for Spending Chart -->
+        <div class="chart-container">
+          <h2>Monthly Spending</h2>
+          <!-- <app-spending-chart [data]="recentTransactions"></app-spending-chart> -->
+        </div>
 
-      <!-- Placeholder for Income vs Expenses Chart -->
-      <div class="chart-container">
-        <h2>Income vs Expenses</h2>
-        <!-- 
+        <!-- Placeholder for Income vs Expenses Chart -->
+        <div class="chart-container">
+          <h2>Income vs Expenses</h2>
+          <!-- 
       Add your chart component here, for example:
       <app-income-expenses-chart [data]="incomeExpensesData"></app-income-expenses-chart>
-      --></div>
+      -->
+        </div>
+      </div>
 
       <div class="recent-transactions">
         <h2>Recent Transactions</h2>

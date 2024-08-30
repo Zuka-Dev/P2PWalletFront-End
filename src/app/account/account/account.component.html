@@ -10,7 +10,70 @@
       <h2>Current Balance</h2>
       <p class="balance">&#8358; {{ accountBalance | number : "1.2-2" }}</p>
     </section>
-
+    <section class="account-balance">
+      <h2>Generate Bank Statement</h2>
+      <form [formGroup]="statementForm" (ngSubmit)="generateStatement()">
+        <div>
+          <label for="startDate"> Start Date </label>
+          <input
+            type="date"
+            name=""
+            id=""
+            formControlName="startDate"
+            class="date"
+          />
+        </div>
+        <div>
+          <label for="startDate"> End Date </label>
+          <input
+            type="date"
+            name=""
+            id=""
+            formControlName="endDate"
+            class="date"
+          />
+        </div>
+        <div>
+          <label for="format"> Format </label>
+          <select name="" id="" formControlName="format">
+            <option value="pdf">PDF</option>
+            <option value="excel">Excel</option>
+          </select>
+        </div>
+        <input
+          type="submit"
+          class="btn"
+          value="Generate"
+          [disabled]="statementForm.invalid"
+        />
+      </form>
+    </section>
+    <section class="account-balance">
+      <form
+        [formGroup]="generateForeignWalletForm"
+        (ngSubmit)="generateForeignWallet()"
+        style="width: 100%; display: flex; justify-content: space-between"
+      >
+        <h2>Generate Foreign Wallet</h2>
+        <div style="display: flex; gap: 20px">
+          <div>
+            <label for="format"> Currency </label>
+            <select name="" id="" formControlName="currency">
+              <option value="USD">USD</option>
+              <option value="GBP">GBP</option>
+              <option value="EUR">EUR</option>
+            </select>
+          </div>
+          <input type="submit" class="btn" value="Generate" />
+          <!-- <input
+            type="submit"
+            class="btn"
+            value="Generate"
+            [disabled]="statementForm.invalid"
+          /> -->
+        </div>
+      </form>
+    </section>
     <section class="account-actions">
       <button (click)="openFundAccountModal()" class="action-button">
         Fund Account

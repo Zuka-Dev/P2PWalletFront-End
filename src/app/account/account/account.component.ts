@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
-import { UserDetails } from '../../../types';
+import { StatementRequestDTO, UserDetails } from '../../../types';
 import { TransferService } from '../../core/services/transfer.service';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ForeignWalletService } from '../../core/services/foreign-wallet.service';
 
 @Component({
   selector: 'app-accounts',
@@ -14,6 +16,8 @@ export class AccountsComponent {
   accountBalance: number = 0;
   showFundAccountModal: boolean = false;
   showTransferMoneyModal: boolean = false;
+  statementForm!: FormGroup;
+  generateForeignWalletForm!: FormGroup;
   isLoading: boolean = false;
   showToast: boolean = false;
   toastType!: 'success' | 'info' | 'error';
@@ -22,11 +26,21 @@ export class AccountsComponent {
   constructor(
     private userService: UserService,
     private transferService: TransferService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder,
+    private foreignWalletService: ForeignWalletService
   ) {}
 
   ngOnInit(): void {
     this.loadAccountData();
+    this.statementForm = this.fb.group({
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      format: ['pdf', Validators.required],
+    });
+    this.generateForeignWalletForm = this.fb.group({
+      currency: ['', Validators.required],
+    });
   }
   loadAccountData() {
     this.isLoading = true;
@@ -56,7 +70,20 @@ export class AccountsComponent {
       }
     );
   }
-
+  generateForeignWallet() {
+    this.isLoading = true;
+    console.log(this.generateForeignWalletForm.value);
+    this.foreignWalletService
+      .createForeignWallet(this.generateForeignWalletForm.value)
+      .subscribe((response) => {
+        this.isLoading = false;
+        console.log(response);
+        if (!response.status) {
+          this.showToastMessage(response.statusMessage, 'error');
+        }
+        this.showToastMessage(response.statusMessage, 'success');
+      });
+  }
   openFundAccountModal() {
     this.showFundAccountModal = true;
   }
@@ -129,6 +156,40 @@ export class AccountsComponent {
       }
     );
   }
+  generateStatement(): void {
+    if (!this.statementForm.valid) {
+      this.showToastMessage('Invalid Form', 'error');
+      return;
+    }
+    this.isLoading = true;
+    const data: StatementRequestDTO = this.statementForm.value;
+    this.transferService.generateStatement(data).subscribe(
+      (response: Blob) => {
+        this.isLoading = false;
+        const fileName = `Statement_${data.startDate}_${data.endDate}.${
+          data.format === 'pdf' ? 'pdf' : 'xlsx'
+        }`;
+        const contentType =
+          data.format.toLowerCase() === 'pdf'
+            ? 'application/pdf'
+            : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
+        const blob = new Blob([response], { type: contentType });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      (error: any) => {
+        console.log(error);
+        this.isLoading = false;
+        this.showToastMessage('Failed to generate statement', 'error');
+      }
+    );
+  }
+
   showToastMessage(message: string, type: 'success' | 'info' | 'error'): void {
     this.toastMessage = message;
     this.toastType = type;

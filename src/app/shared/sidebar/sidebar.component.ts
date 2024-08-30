@@ -34,7 +34,6 @@ export class SidebarComponent {
   }
   logout(): void {
     this.userService.logout();
-    this.router.navigateByUrl('/auth/sign-in');
   }
   profile(): void {
     this.router.navigateByUrl('/profile');

@@ -13,6 +13,14 @@
   min-height: 100vh;
   margin-left: 250px; // Adjust this value to match your sidebar width
 }
+.stats {
+  width: 70vw;
+  display: flex;
+  justify-content: flex-start;
+  align-items: start;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
 
 .user-info {
   margin-bottom: 2rem;
@@ -31,8 +39,8 @@
   }
 }
 
-.accounts-section {
-  margin-bottom: 2rem;
+.account-summary {
+  width: fit-content;
 
   h2 {
     font-size: 2rem;
@@ -41,9 +49,13 @@
   }
 
   .account-cards {
+    width: fit-content;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
     gap: 1rem;
+    padding: 2rem;
   }
 
   .account-card {
@@ -52,7 +64,8 @@
     border-radius: 15px;
     width: 340px;
     height: 200px;
-    position: relative;
+    display: flex;
+    flex-direction: column;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
     overflow: hidden;
@@ -62,23 +75,17 @@
     }
 
     .card-chip {
+      justify-self: left;
       width: 50px;
       height: 40px;
       background: linear-gradient(to bottom right, #ffd700, #ffcc00, #cca300);
       border-radius: 5px;
-      position: absolute;
-      top: 20px;
-      left: 20px;
+
       overflow: hidden;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 
       &::before {
         content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
         background: linear-gradient(
             to right,
             transparent 40%,
@@ -96,11 +103,7 @@
 
       &::after {
         content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+
         background: linear-gradient(
           45deg,
           transparent 45%,
@@ -114,28 +117,20 @@
     }
 
     .card-username {
-      position: absolute;
-      top: 70px;
-      left: 20px;
-      font-family: "Courier New", monospace;
-      font-size: 1.2rem;
-      letter-spacing: 3px;
+      font-family: $font-family;
+      text-transform: uppercase;
+      font-size: 32px;
+      font-weight: bold;
       color: rgba(255, 255, 255, 0.8);
     }
 
     .account-number {
-      position: absolute;
-      bottom: 60px;
-      left: 20px;
       font-size: 1.2rem;
       letter-spacing: 2px;
-      font-family: "Courier New", monospace;
+      font-family: $font-family;
     }
 
     .balance {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
       font-size: 1.5rem;
       font-weight: bold;
     }

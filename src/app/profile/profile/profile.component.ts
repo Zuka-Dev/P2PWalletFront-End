@@ -219,13 +219,41 @@ export class ProfileComponent {
   }
 
   onCreatePin() {
-    this.closeCreatePinModal()
     this.openSecurityModal();
+    if (this.createPinForm.valid) {
+      this.isLoading = true;
+      const createPinDto: CreatePinDTO = {
+        pin: this.createPinForm.get('pin')?.value,
+      };
+      this.profileService.createPin(createPinDto).subscribe((res) => {
+        if (!res.status) this.showToastMessage(res.statusMessage, 'error');
+        this.showToastMessage(res.statusMessage, 'success');
+        this.closeCreatePinModal();
+        this.isLoading = false;
+      });
+    }
   }
 
   onChangePIN() {
-    this.closeChangePinModal()
     this.openSecurityAnswerModal();
+    if (this.changePinForm.valid && this.userDetails) {
+      this.isLoading = true;
+      const changePinDto: ChangePinDTO = {
+        oldPin: this.changePinForm.get('oldPin')?.value,
+        newPin: this.changePinForm.get('newPin')?.value,
+      };
+      this.profileService.changePin(changePinDto).subscribe(
+        (res) => {
+          this.showToastMessage(res.statusMessage, 'success');
+          this.closeChangePinModal();
+          this.isLoading = false;
+        },
+        (error) => {
+          this.showToastMessage('Failed to change PIN', 'error');
+          this.isLoading = false;
+        }
+      );
+    }
   }
 
   afterSecurityCheck() {

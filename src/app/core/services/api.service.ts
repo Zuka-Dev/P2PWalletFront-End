@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { StatementRequestDTO } from '../../../types';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,18 @@ export class ApiService {
   postRequest(url: string, data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}${url}`, data, {
       headers: { 'Content-Type': 'application/json' },
+    });
+  }
+  authorisedPostFileRequest(
+    url: string,
+    data: StatementRequestDTO
+  ): Observable<any> {
+    return this.http.post(`${this.baseUrl}${url}`, data, {
+      responseType: 'blob',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+      },
     });
   }
   authorisedPostRequest(url: string, data: any): Observable<any> {

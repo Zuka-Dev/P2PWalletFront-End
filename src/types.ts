@@ -17,6 +17,9 @@ export interface SignUpDTO {
   password: string;
   address: string;
 }
+export interface CreateForeignWalletDTO {
+  currency: string;
+}
 export interface UserDetails {
   firstName: string;
   lastName: string;
@@ -56,7 +59,6 @@ export interface ChangePasswordDTO {
 export interface ChangePinDTO {
   oldPin: string;
   newPin: string;
-  
 }
 export interface SecurityAnswer {
   securityQuestionId: number;
@@ -74,4 +76,9 @@ export interface SecurityQuestion {
 }
 export interface CreatePinDTO {
   pin: string;
+}
+export interface StatementRequestDTO {
+  startDate: Date;
+  endDate: Date;
+  format: string;
 }

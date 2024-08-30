@@ -1,5 +1,34 @@
 @import "../../../styles/variables";
 
+form {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  .date {
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border: 1px solid $secondary-color
+  }
+  .btn {
+    background-image: $gradient;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      background-image: $rev-gradient;
+    }
+  }
+}
 .accounts-page {
   display: flex;
   height: 100vh;
